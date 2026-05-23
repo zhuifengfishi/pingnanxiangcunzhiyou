@@ -816,7 +816,7 @@ export default function Home() {
           </div>
 
           <Button
-            onClick={() => setShowDialog(true)}
+            onClick={() => window.location.href = '/miniprogram'}
             size="lg"
             className="bg-white text-green-700 hover:bg-gray-100 text-lg px-8 py-6 rounded-full shadow-xl"
           >
