@@ -43,9 +43,19 @@ import {
 // Mock数据
 const mockData = {
   hero: {
-    visitorPeak: 3000,
-    parkingPeak: 2000,
-    activityPeriod: '2-3个月',
+    // 2025年最新数据
+    visitorPeakDay: '5万', // 周末单日峰值（四坪+龙潭片区）
+    visitorPeakWeekend: 50000, // 周末客流最高峰
+    visitorNormal: '3000-10000', // 平峰工作日
+    parkingPeak: '8000', // 单日车流峰值
+    seasonVisitors: '75-82万', // 整季总人流量（52天）
+    seasonParking: '28-32万', // 整季总车流量
+    yearVisitors: '130万', // 2025全年游客（龙潭片区）
+    seasonRatio: '60%', // 柿子季占全年比例
+    nationalDayVisitors: '13.6万', // 国庆假期游客
+    nationalDayParking: '3.4万', // 国庆假期车流
+    revenue: '600万', // 柿子相关产业营收
+    activityPeriod: '52天', // 活动周期（10月30日-12月20日）
     problem: '数据正在消散',
     goal: '沉淀乡村数字资产'
   },
@@ -263,47 +273,76 @@ export default function Home() {
             </div>
           </div>
 
-          {/* 数据卡片 */}
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 w-full max-w-5xl mb-12">
-            <Card className="bg-white/60 backdrop-blur border-2 border-green-200 hover:border-green-400 transition-all">
-              <CardContent className="pt-4 text-center">
-                <Users className="w-8 h-8 mx-auto mb-2 text-green-600" />
-                <p className="text-3xl font-bold text-green-700">{mockData.hero.visitorPeak}</p>
-                <p className="text-sm text-gray-600">游客峰值(人/天)</p>
-              </CardContent>
-            </Card>
+          {/* 数据卡片 - 2025年最新数据 */}
+          <div className="space-y-4 w-full max-w-5xl mb-8">
+            {/* 第一行：核心数据 */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <Card className="bg-white/60 backdrop-blur border-2 border-green-200 hover:border-green-400 transition-all">
+                <CardContent className="pt-4 text-center">
+                  <Users className="w-8 h-8 mx-auto mb-2 text-green-600" />
+                  <p className="text-3xl font-bold text-green-700">{mockData.hero.visitorPeakDay}</p>
+                  <p className="text-sm text-gray-600">单日峰值(人)</p>
+                  <p className="text-xs text-gray-500 mt-1">周末最高峰</p>
+                </CardContent>
+              </Card>
+              
+              <Card className="bg-white/60 backdrop-blur border-2 border-emerald-200 hover:border-emerald-400 transition-all">
+                <CardContent className="pt-4 text-center">
+                  <Users className="w-8 h-8 mx-auto mb-2 text-emerald-600" />
+                  <p className="text-2xl font-bold text-emerald-700">{mockData.hero.seasonVisitors}</p>
+                  <p className="text-sm text-gray-600">整季客流(人次)</p>
+                  <p className="text-xs text-gray-500 mt-1">柿子季52天</p>
+                </CardContent>
+              </Card>
+              
+              <Card className="bg-white/60 backdrop-blur border-2 border-orange-200 hover:border-orange-400 transition-all">
+                <CardContent className="pt-4 text-center">
+                  <Car className="w-8 h-8 mx-auto mb-2 text-orange-600" />
+                  <p className="text-3xl font-bold text-orange-700">{mockData.hero.parkingPeak}</p>
+                  <p className="text-sm text-gray-600">单日车流峰值(辆)</p>
+                  <p className="text-xs text-gray-500 mt-1">周末最高峰</p>
+                </CardContent>
+              </Card>
+              
+              <Card className="bg-white/60 backdrop-blur border-2 border-yellow-200 hover:border-yellow-400 transition-all">
+                <CardContent className="pt-4 text-center">
+                  <Leaf className="w-8 h-8 mx-auto mb-2 text-yellow-600" />
+                  <p className="text-2xl font-bold text-yellow-700">{mockData.hero.revenue}</p>
+                  <p className="text-sm text-gray-600">产业营收(元)</p>
+                  <p className="text-xs text-gray-500 mt-1">2025年柿子季</p>
+                </CardContent>
+              </Card>
+            </div>
             
-            <Card className="bg-white/60 backdrop-blur border-2 border-orange-200 hover:border-orange-400 transition-all">
-              <CardContent className="pt-4 text-center">
-                <Car className="w-8 h-8 mx-auto mb-2 text-orange-600" />
-                <p className="text-3xl font-bold text-orange-700">{mockData.hero.parkingPeak}</p>
-                <p className="text-sm text-gray-600">停车峰值(辆/天)</p>
-              </CardContent>
-            </Card>
-            
-            <Card className="bg-white/60 backdrop-blur border-2 border-cyan-200 hover:border-cyan-400 transition-all">
-              <CardContent className="pt-4 text-center">
-                <Leaf className="w-8 h-8 mx-auto mb-2 text-cyan-600" />
-                <p className="text-2xl font-bold text-cyan-700">{mockData.hero.activityPeriod}</p>
-                <p className="text-sm text-gray-600">活动周期</p>
-              </CardContent>
-            </Card>
-            
-            <Card className="bg-white/60 backdrop-blur border-2 border-red-200 hover:border-red-400 transition-all">
-              <CardContent className="pt-4 text-center">
-                <TrendingUp className="w-8 h-8 mx-auto mb-2 text-red-600" />
-                <p className="text-base font-semibold text-red-700">数据消散</p>
-                <p className="text-sm text-gray-600">当前问题</p>
-              </CardContent>
-            </Card>
-            
-            <Card className="bg-white/60 backdrop-blur border-2 border-blue-200 hover:border-blue-400 transition-all col-span-2 md:col-span-1">
-              <CardContent className="pt-4 text-center">
-                <Database className="w-8 h-8 mx-auto mb-2 text-blue-600" />
-                <p className="text-base font-semibold text-blue-700">沉淀资产</p>
-                <p className="text-sm text-gray-600">项目目标</p>
-              </CardContent>
-            </Card>
+            {/* 第二行：全年数据 */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Card className="bg-white/60 backdrop-blur border-2 border-cyan-200 hover:border-cyan-400 transition-all">
+                <CardContent className="pt-4 text-center">
+                  <Users className="w-6 h-6 mx-auto mb-2 text-cyan-600" />
+                  <p className="text-2xl font-bold text-cyan-700">{mockData.hero.yearVisitors}</p>
+                  <p className="text-sm text-gray-600">2025全年游客(人次)</p>
+                  <p className="text-xs text-gray-500 mt-1">龙潭片区 | 柿子季占{mockData.hero.seasonRatio}</p>
+                </CardContent>
+              </Card>
+              
+              <Card className="bg-white/60 backdrop-blur border-2 border-red-200 hover:border-red-400 transition-all">
+                <CardContent className="pt-4 text-center">
+                  <TrendingUp className="w-6 h-6 mx-auto mb-2 text-red-600" />
+                  <p className="text-base font-bold text-red-700">数据正在消散</p>
+                  <p className="text-sm text-gray-600">当前问题</p>
+                  <p className="text-xs text-red-600 mt-1">游客数据未能沉淀</p>
+                </CardContent>
+              </Card>
+              
+              <Card className="bg-white/60 backdrop-blur border-2 border-blue-200 hover:border-blue-400 transition-all">
+                <CardContent className="pt-4 text-center">
+                  <Database className="w-6 h-6 mx-auto mb-2 text-blue-600" />
+                  <p className="text-base font-bold text-blue-700">沉淀数字资产</p>
+                  <p className="text-sm text-gray-600">项目目标</p>
+                  <p className="text-xs text-blue-600 mt-1">让流量变生产力</p>
+                </CardContent>
+              </Card>
+            </div>
           </div>
 
           {/* 向下箭头 */}
