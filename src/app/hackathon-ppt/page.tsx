@@ -19,15 +19,15 @@ export default function HackathonPPT() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight' || e.key === ' ') {
-        nextPage();
+        setCurrentPage((prev) => (prev < totalPages - 1 ? prev + 1 : prev));
       } else if (e.key === 'ArrowLeft') {
-        prevPage();
+        setCurrentPage((prev) => (prev > 0 ? prev - 1 : prev));
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentPage]);
+  }, []);
 
   const pages = [
     // 第1页：封面
