@@ -235,6 +235,100 @@ export default function MiniProgramPage() {
     tips: ['古村漫步最佳清晨', '民宿体验推荐', '咖啡文化浓厚', '文创产品丰富']
   };
 
+  // 推荐路线数据
+  const routes = [
+    {
+      id: 1,
+      name: '古村文化一日游',
+      path: '龙潭古镇 → 四坪村 → 漈下村',
+      duration: '5-6小时',
+      type: '深度游',
+      icon: '🏛️',
+      color: 'from-green-50 to-blue-50'
+    },
+    {
+      id: 2,
+      name: '文艺打卡半日游',
+      path: '厦地村水田书店 → 陶艺工坊 → 稻田研学',
+      duration: '3-4小时',
+      type: '文艺青年',
+      icon: '📚',
+      color: 'from-purple-50 to-pink-50'
+    },
+    {
+      id: 3,
+      name: '黄酒文化体验',
+      path: '北墘村古法酿酒 → 黄酒品鉴 → 封坛定制',
+      duration: '2-3小时',
+      type: '非遗体验',
+      icon: '🍶',
+      color: 'from-amber-50 to-orange-50'
+    },
+    {
+      id: 4,
+      name: '花海田园亲子游',
+      path: '白玉村花海 → 稻田公社 → 露营野餐',
+      duration: '4-5小时',
+      type: '亲子游玩',
+      icon: '🌻',
+      color: 'from-yellow-50 to-green-50'
+    },
+    {
+      id: 5,
+      name: '畲族风情体验',
+      path: '巴地村畲族村寨 → 火凤凰演出 → 民族服饰体验',
+      duration: '3-4小时',
+      type: '民族文化',
+      icon: '🔥',
+      color: 'from-red-50 to-pink-50'
+    },
+    {
+      id: 6,
+      name: '双溪古镇人文游',
+      path: '双溪文庙 → 城隍庙 → 薛府美术馆',
+      duration: '3-4小时',
+      type: '人文历史',
+      icon: '🏛️',
+      color: 'from-blue-50 to-indigo-50'
+    },
+    {
+      id: 7,
+      name: '漈头古厝探秘',
+      path: '漈头村古厝群 → 西洋建筑 → 耕读文化展',
+      duration: '2-3小时',
+      type: '古建探秘',
+      icon: '🏘️',
+      color: 'from-teal-50 to-cyan-50'
+    },
+    {
+      id: 8,
+      name: '小梨洋国风游',
+      path: '小梨洋村 → 国风市集 → 侠客体验 → 汉服打卡',
+      duration: '3-4小时',
+      type: '国风体验',
+      icon: '🎋',
+      color: 'from-cyan-50 to-blue-50'
+    },
+    {
+      id: 9,
+      name: '柿子采摘体验',
+      path: '四坪村柿子园 → 采摘体验 → 柿饼制作',
+      duration: '2-3小时',
+      type: '农事体验',
+      icon: '🍅',
+      color: 'from-orange-50 to-red-50'
+    },
+    {
+      id: 10,
+      name: '古村夜游线路',
+      path: '龙潭古镇夜景 → 漈下古廊桥 → 篝火晚会',
+      duration: '4-5小时',
+      type: '夜游体验',
+      icon: '🌙',
+      color: 'from-indigo-50 to-purple-50'
+    }
+  ];
+
   // 快捷功能入口
   const quickActions = [
     { icon: MapPin, label: '导览地图', color: 'bg-blue-500', action: () => setShowMapModal(true) },
@@ -579,26 +673,36 @@ export default function MiniProgramPage() {
 
             {/* 推荐路线 */}
             <div>
-              <h3 className="font-bold text-gray-800 mb-3 flex items-center gap-2">
-                <Navigation className="w-5 h-5 text-blue-500" />
-                推荐路线
-              </h3>
-              <div className="space-y-2">
-                <Card className="border-0 shadow-sm bg-gradient-to-r from-green-50 to-blue-50">
-                  <CardContent className="p-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center text-white">
-                        <MapPin className="w-5 h-5" />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="font-bold text-sm text-gray-800">古村文化一日游</h4>
-                        <p className="text-xs text-gray-500">龙潭古镇 → 四坪村 → 漈下村</p>
-                        <p className="text-xs text-gray-500">预计5-6小时</p>
-                      </div>
-                      <ChevronRight className="w-5 h-5 text-gray-400" />
-                    </div>
-                  </CardContent>
-                </Card>
+              <div className="flex justify-between items-center mb-3">
+                <h3 className="font-bold text-gray-800 flex items-center gap-2">
+                  <Navigation className="w-5 h-5 text-blue-500" />
+                  推荐路线
+                </h3>
+                <span className="text-xs text-gray-500">左右滑动查看更多 →</span>
+              </div>
+              <div className="overflow-x-auto pb-2 -mx-3 px-3 scrollbar-hide">
+                <div className="flex gap-3" style={{ width: 'max-content' }}>
+                  {routes.map((route) => (
+                    <Card key={route.id} className={`border-0 shadow-sm bg-gradient-to-r ${route.color} flex-shrink-0`} style={{ width: '260px' }}>
+                      <CardContent className="p-3">
+                        <div className="flex items-start gap-3">
+                          <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center text-2xl shadow-sm">
+                            {route.icon}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-bold text-sm text-gray-800 mb-1 truncate">{route.name}</h4>
+                            <p className="text-xs text-gray-600 mb-1 truncate">{route.path}</p>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs text-gray-500">预计{route.duration}</span>
+                              <Badge variant="outline" className="text-xs">{route.type}</Badge>
+                            </div>
+                          </div>
+                          <ChevronRight className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
               </div>
             </div>
 
