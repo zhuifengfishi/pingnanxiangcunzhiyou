@@ -51,6 +51,7 @@ export default function MiniProgramPage() {
   const [activeCategory, setActiveCategory] = useState(0);
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [showProductDetail, setShowProductDetail] = useState(false);
+  const [checkedSpots, setCheckedSpots] = useState<number[]>([]);
   
   // 功能弹窗状态
   const [showMapModal, setShowMapModal] = useState(false);
@@ -426,6 +427,14 @@ export default function MiniProgramPage() {
     }
   };
 
+  // 拍照打卡
+  const handlePhotoCheckIn = (spotId: number) => {
+    if (!checkedSpots.includes(spotId)) {
+      setCheckedSpots([...checkedSpots, spotId]);
+      showSuccessMessage('打卡成功！继续加油~');
+    }
+  };
+
   // 打卡
   const handleCheckIn = (spotId: number) => {
     if (!checkInList.includes(spotId)) {
@@ -628,6 +637,231 @@ export default function MiniProgramPage() {
                     </CardContent>
                   </Card>
                 ))}
+              </div>
+            </div>
+
+            {/* 拍照打卡任务 */}
+            <div className="mt-6">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-bold text-gray-800 flex items-center gap-2">
+                  <Camera className="w-5 h-5 text-pink-500" />
+                  拍照打卡任务
+                </h3>
+                <div className="text-sm text-gray-500">
+                  已完成 {checkedSpots.length}/6
+                </div>
+              </div>
+
+              {/* 进度条 */}
+              <div className="bg-gray-200 rounded-full h-2 mb-4">
+                <div 
+                  className="bg-gradient-to-r from-pink-500 to-orange-500 h-2 rounded-full transition-all duration-300"
+                  style={{ width: `${(checkedSpots.length / 6) * 100}%` }}
+                ></div>
+              </div>
+
+              {/* 完成奖励提示 */}
+              {checkedSpots.length === 6 && (
+                <Card className="border-2 border-orange-500 bg-gradient-to-r from-orange-50 to-pink-50 mb-4">
+                  <CardContent className="p-4 text-center">
+                    <Gift className="w-12 h-12 text-orange-500 mx-auto mb-2" />
+                    <h4 className="font-bold text-orange-600 mb-1">恭喜完成所有打卡！</h4>
+                    <p className="text-sm text-gray-600 mb-3">可领取屏南特产大礼包</p>
+                    <Button className="bg-orange-500 hover:bg-orange-600">
+                      立即领取奖励
+                    </Button>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* 打卡景点列表 */}
+              <div className="space-y-3">
+                {/* 景点1：水田书店 */}
+                <Card className="border-0 shadow-md overflow-hidden">
+                  <div className="flex">
+                    <div className="w-24 h-24 bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center text-white text-3xl flex-shrink-0">
+                      📚
+                    </div>
+                    <div className="flex-1 p-3">
+                      <div className="flex items-start justify-between mb-1">
+                        <h4 className="font-bold text-sm">厦地水田书店</h4>
+                        {checkedSpots.includes(1) && (
+                          <Badge className="bg-green-500 text-xs">已打卡</Badge>
+                        )}
+                      </div>
+                      <p className="text-xs text-gray-500 mb-2">📸 最佳机位：稻田中央小径</p>
+                      <p className="text-xs text-gray-400 mb-2">样片：站在小径尽头，背靠书店，面朝稻田</p>
+                      <button
+                        onClick={() => handlePhotoCheckIn(1)}
+                        disabled={checkedSpots.includes(1)}
+                        className={`text-xs px-3 py-1 rounded-full ${
+                          checkedSpots.includes(1) 
+                            ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                            : 'bg-pink-500 text-white hover:bg-pink-600'
+                        }`}
+                      >
+                        {checkedSpots.includes(1) ? '已完成' : '拍照打卡'}
+                      </button>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* 景点2：柿子园 */}
+                <Card className="border-0 shadow-md overflow-hidden">
+                  <div className="flex">
+                    <div className="w-24 h-24 bg-gradient-to-br from-orange-400 to-red-400 flex items-center justify-center text-white text-3xl flex-shrink-0">
+                      🍅
+                    </div>
+                    <div className="flex-1 p-3">
+                      <div className="flex items-start justify-between mb-1">
+                        <h4 className="font-bold text-sm">四坪柿子园</h4>
+                        {checkedSpots.includes(2) && (
+                          <Badge className="bg-green-500 text-xs">已打卡</Badge>
+                        )}
+                      </div>
+                      <p className="text-xs text-gray-500 mb-2">📸 最佳机位：柿子树下仰拍</p>
+                      <p className="text-xs text-gray-400 mb-2">样片：仰拍挂满柿子的枝头，蓝天为背景</p>
+                      <button
+                        onClick={() => handlePhotoCheckIn(2)}
+                        disabled={checkedSpots.includes(2)}
+                        className={`text-xs px-3 py-1 rounded-full ${
+                          checkedSpots.includes(2) 
+                            ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                            : 'bg-pink-500 text-white hover:bg-pink-600'
+                        }`}
+                      >
+                        {checkedSpots.includes(2) ? '已完成' : '拍照打卡'}
+                      </button>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* 景点3：古廊桥 */}
+                <Card className="border-0 shadow-md overflow-hidden">
+                  <div className="flex">
+                    <div className="w-24 h-24 bg-gradient-to-br from-amber-400 to-yellow-400 flex items-center justify-center text-white text-3xl flex-shrink-0">
+                      🌉
+                    </div>
+                    <div className="flex-1 p-3">
+                      <div className="flex items-start justify-between mb-1">
+                        <h4 className="font-bold text-sm">漈下古廊桥</h4>
+                        {checkedSpots.includes(3) && (
+                          <Badge className="bg-green-500 text-xs">已打卡</Badge>
+                        )}
+                      </div>
+                      <p className="text-xs text-gray-500 mb-2">📸 最佳机位：桥下溪边倒影</p>
+                      <p className="text-xs text-gray-400 mb-2">样片：清晨拍摄廊桥在水中的倒影</p>
+                      <button
+                        onClick={() => handlePhotoCheckIn(3)}
+                        disabled={checkedSpots.includes(3)}
+                        className={`text-xs px-3 py-1 rounded-full ${
+                          checkedSpots.includes(3) 
+                            ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                            : 'bg-pink-500 text-white hover:bg-pink-600'
+                        }`}
+                      >
+                        {checkedSpots.includes(3) ? '已完成' : '拍照打卡'}
+                      </button>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* 景点4：黄酒文化馆 */}
+                <Card className="border-0 shadow-md overflow-hidden">
+                  <div className="flex">
+                    <div className="w-24 h-24 bg-gradient-to-br from-amber-600 to-orange-600 flex items-center justify-center text-white text-3xl flex-shrink-0">
+                      🏮
+                    </div>
+                    <div className="flex-1 p-3">
+                      <div className="flex items-start justify-between mb-1">
+                        <h4 className="font-bold text-sm">北墘黄酒文化馆</h4>
+                        {checkedSpots.includes(4) && (
+                          <Badge className="bg-green-500 text-xs">已打卡</Badge>
+                        )}
+                      </div>
+                      <p className="text-xs text-gray-500 mb-2">📸 最佳机位：酒坛墙前侧拍</p>
+                      <p className="text-xs text-gray-400 mb-2">样片：站在酒坛垒墙前，侧身回眸</p>
+                      <button
+                        onClick={() => handlePhotoCheckIn(4)}
+                        disabled={checkedSpots.includes(4)}
+                        className={`text-xs px-3 py-1 rounded-full ${
+                          checkedSpots.includes(4) 
+                            ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                            : 'bg-pink-500 text-white hover:bg-pink-600'
+                        }`}
+                      >
+                        {checkedSpots.includes(4) ? '已完成' : '拍照打卡'}
+                      </button>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* 景点5：古村巷道 */}
+                <Card className="border-0 shadow-md overflow-hidden">
+                  <div className="flex">
+                    <div className="w-24 h-24 bg-gradient-to-br from-gray-400 to-slate-500 flex items-center justify-center text-white text-3xl flex-shrink-0">
+                      🏘️
+                    </div>
+                    <div className="flex-1 p-3">
+                      <div className="flex items-start justify-between mb-1">
+                        <h4 className="font-bold text-sm">龙潭古村巷道</h4>
+                        {checkedSpots.includes(5) && (
+                          <Badge className="bg-green-500 text-xs">已打卡</Badge>
+                        )}
+                      </div>
+                      <p className="text-xs text-gray-500 mb-2">📸 最佳机位：青石板路纵深</p>
+                      <p className="text-xs text-gray-400 mb-2">样片：沿巷道拍摄纵深画面，古厝为背景</p>
+                      <button
+                        onClick={() => handlePhotoCheckIn(5)}
+                        disabled={checkedSpots.includes(5)}
+                        className={`text-xs px-3 py-1 rounded-full ${
+                          checkedSpots.includes(5) 
+                            ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                            : 'bg-pink-500 text-white hover:bg-pink-600'
+                        }`}
+                      >
+                        {checkedSpots.includes(5) ? '已完成' : '拍照打卡'}
+                      </button>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* 景点6：花海 */}
+                <Card className="border-0 shadow-md overflow-hidden">
+                  <div className="flex">
+                    <div className="w-24 h-24 bg-gradient-to-br from-pink-400 to-rose-400 flex items-center justify-center text-white text-3xl flex-shrink-0">
+                      🌸
+                    </div>
+                    <div className="flex-1 p-3">
+                      <div className="flex items-start justify-between mb-1">
+                        <h4 className="font-bold text-sm">白玉花海</h4>
+                        {checkedSpots.includes(6) && (
+                          <Badge className="bg-green-500 text-xs">已打卡</Badge>
+                        )}
+                      </div>
+                      <p className="text-xs text-gray-500 mb-2">📸 最佳机位：花田中央俯拍</p>
+                      <p className="text-xs text-gray-400 mb-2">样片：在花海中蹲下，仰拍天空与花田</p>
+                      <button
+                        onClick={() => handlePhotoCheckIn(6)}
+                        disabled={checkedSpots.includes(6)}
+                        className={`text-xs px-3 py-1 rounded-full ${
+                          checkedSpots.includes(6) 
+                            ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                            : 'bg-pink-500 text-white hover:bg-pink-600'
+                        }`}
+                      >
+                        {checkedSpots.includes(6) ? '已完成' : '拍照打卡'}
+                      </button>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+
+              {/* 奖励说明 */}
+              <div className="mt-4 p-3 bg-pink-50 rounded-lg border border-pink-200">
+                <p className="text-xs text-gray-600 text-center">
+                  🎁 完成所有打卡可领取：屏南柿子 + 柿子文创纪念品
+                </p>
               </div>
             </div>
           </div>
