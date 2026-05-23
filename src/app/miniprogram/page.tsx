@@ -40,7 +40,8 @@ import {
   Navigation2,
   Volume2,
   Zap,
-  ShoppingBag
+  ShoppingBag,
+  Eye
 } from 'lucide-react';
 
 export default function MiniProgramPage() {
@@ -326,6 +327,114 @@ export default function MiniProgramPage() {
       type: '夜游体验',
       icon: '🌙',
       color: 'from-indigo-50 to-purple-50'
+    }
+  ];
+
+  // 直播间预览列表（商户商家直播）
+  const liveRooms = [
+    {
+      id: 1,
+      title: '四坪柿子园实拍',
+      anchor: '柿子姐姐',
+      avatar: '👩‍🌾',
+      viewers: 3562,
+      image: '🍅',
+      village: '四坪村',
+      status: '直播中',
+      product: '屏南柿子礼盒',
+      price: '¥98',
+      color: 'from-red-500 to-orange-500'
+    },
+    {
+      id: 2,
+      title: '古村慢生活',
+      anchor: '龙潭小主',
+      avatar: '📸',
+      viewers: 2891,
+      image: '🏞️',
+      village: '龙潭古镇',
+      status: '直播中',
+      product: '古村摄影服务',
+      price: '¥50/次',
+      color: 'from-green-500 to-teal-500'
+    },
+    {
+      id: 3,
+      title: '黄酒酿制现场',
+      anchor: '北墘酒坊',
+      avatar: '🍶',
+      viewers: 1872,
+      image: '🍾',
+      village: '北墘村',
+      status: '直播中',
+      product: '古法黄酒',
+      price: '¥168',
+      color: 'from-amber-500 to-yellow-500'
+    },
+    {
+      id: 4,
+      title: '水田书店打卡',
+      anchor: '厦地文青',
+      avatar: '📚',
+      viewers: 2156,
+      image: '📖',
+      village: '厦地村',
+      status: '直播中',
+      product: '文创周边',
+      price: '¥35起',
+      color: 'from-purple-500 to-pink-500'
+    },
+    {
+      id: 5,
+      title: '畲族风情展演',
+      anchor: '巴地阿妹',
+      avatar: '💃',
+      viewers: 3215,
+      image: '🔥',
+      village: '巴地村',
+      status: '直播中',
+      product: '畲族刺绣包',
+      price: '¥128',
+      color: 'from-orange-500 to-red-500'
+    },
+    {
+      id: 6,
+      title: '花海露营vlog',
+      anchor: '白玉小筑',
+      avatar: '⛺',
+      viewers: 1534,
+      image: '🌻',
+      village: '白玉村',
+      status: '直播中',
+      product: '露营套餐',
+      price: '¥299/晚',
+      color: 'from-yellow-500 to-green-500'
+    },
+    {
+      id: 7,
+      title: '陶艺手作直播',
+      anchor: '厦地陶坊',
+      avatar: '🏺',
+      viewers: 2453,
+      image: '🎨',
+      village: '厦地村',
+      status: '直播中',
+      product: '陶艺体验课',
+      price: '¥88',
+      color: 'from-cyan-500 to-blue-500'
+    },
+    {
+      id: 8,
+      title: '甘国宝武术秀',
+      anchor: '漈下武馆',
+      avatar: '⚔️',
+      viewers: 4521,
+      image: '🥋',
+      village: '漈下村',
+      status: '直播中',
+      product: '武术体验课',
+      price: '¥68',
+      color: 'from-red-600 to-orange-500'
     }
   ];
 
@@ -668,6 +777,62 @@ export default function MiniProgramPage() {
                     </CardContent>
                   </Card>
                 ))}
+              </div>
+            </div>
+
+            {/* 正在直播 */}
+            <div>
+              <div className="flex justify-between items-center mb-3">
+                <h3 className="font-bold text-gray-800 flex items-center gap-2">
+                  <Video className="w-5 h-5 text-pink-500" />
+                  乡村直播
+                </h3>
+                <span className="text-xs text-gray-500">左右滑动查看更多 →</span>
+              </div>
+              <div className="overflow-x-auto pb-2 -mx-3 px-3 scrollbar-hide">
+                <div className="flex gap-3" style={{ width: 'max-content' }}>
+                  {liveRooms.map((room) => (
+                    <div
+                      key={room.id}
+                      className="w-[280px] bg-white rounded-lg shadow-md overflow-hidden flex-shrink-0"
+                    >
+                      {/* 直播预览图 */}
+                      <div className={`h-32 bg-gradient-to-br ${room.color} flex items-center justify-center relative`}>
+                        <span className="text-5xl">{room.image}</span>
+                        {/* 直播状态标签 */}
+                        <div className="absolute top-2 left-2 flex items-center gap-1 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                          <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                          {room.status}
+                        </div>
+                        {/* 观看人数 */}
+                        <div className="absolute top-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
+                          <Eye className="w-3 h-3" />
+                          {room.viewers}
+                        </div>
+                      </div>
+                      {/* 直播信息 */}
+                      <div className="p-3">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-xl">{room.avatar}</span>
+                          <div className="flex-1">
+                            <div className="font-bold text-sm text-gray-800">{room.title}</div>
+                            <div className="text-xs text-gray-500">{room.anchor} · {room.village}</div>
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div className="text-xs text-gray-600">
+                            <ShoppingBag className="w-3 h-3 inline mr-1" />
+                            {room.product}
+                            <span className="text-orange-500 font-bold ml-1">{room.price}</span>
+                          </div>
+                          <button className="bg-pink-500 text-white text-xs px-3 py-1 rounded-full hover:bg-pink-600 transition-colors">
+                            进入直播间
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
