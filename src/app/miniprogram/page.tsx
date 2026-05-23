@@ -668,7 +668,7 @@ export default function MiniProgramPage() {
       {/* 导航栏 */}
       <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-3">
         <div className="flex items-center justify-between mb-3">
-          <h1 className="text-lg font-bold">屏南柿子节</h1>
+          <h1 className="text-lg font-bold">屏南乡村智游</h1>
           <div className="flex gap-3">
             <Search className="w-5 h-5" />
             <Bell className="w-5 h-5" />
@@ -693,7 +693,7 @@ export default function MiniProgramPage() {
                   <div className="text-4xl">🍅</div>
                   <div>
                     <h2 className="font-bold text-lg">欢迎来到屏南</h2>
-                    <p className="text-sm opacity-90">柿子节精彩活动进行中</p>
+                    <p className="text-sm opacity-90">您的智慧乡村游玩助手</p>
                   </div>
                 </div>
               </CardContent>
