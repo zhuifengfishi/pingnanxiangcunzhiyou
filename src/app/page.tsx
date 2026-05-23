@@ -241,11 +241,11 @@ export default function Home() {
             </div>
             
             <h1 className="text-5xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-green-600 via-green-700 to-orange-600 bg-clip-text text-transparent">
-              屏南数字新农资
+              屏南乡村智游
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-600 mb-6">
-              让游客流量，变成乡村生产力
+              屏南数字新农资
             </p>
             
             <div className="flex flex-wrap items-center justify-center gap-3 text-lg">
