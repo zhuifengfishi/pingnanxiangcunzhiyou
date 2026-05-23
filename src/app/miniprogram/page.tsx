@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import {
   Home,
   MapPin,
@@ -28,28 +28,22 @@ import {
   Bell,
   Settings,
   HelpCircle,
-  Wallet,
   Package,
   Calendar,
   Ticket,
   Bookmark,
   CheckCircle2,
-  Wine,
-  Music,
-  Sparkles,
-  BookOpen,
-  Flower2,
-  Swords,
-  Palette
+  X
 } from 'lucide-react';
 
 export default function MiniProgramPage() {
   const [activeTab, setActiveTab] = useState<'home' | 'guide' | 'shop' | 'mine'>('home');
-  const [selectedVillage, setSelectedVillage] = useState(0);
   const [trunkItems, setTrunkItems] = useState<number[]>([]);
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [activeCategory, setActiveCategory] = useState(0);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [showProductDetail, setShowProductDetail] = useState(false);
 
   // 屏南8大特色村庄
   const villages = [
@@ -237,15 +231,64 @@ export default function MiniProgramPage() {
     }
   ];
 
-  // 乡村好物
-  const products = [
-    { id: 1, name: '屏南柿子礼盒', price: 98, originalPrice: 128, image: '🎁', sales: 856, tag: '爆款', village: '四坪村' },
-    { id: 2, name: '北墘黄酒礼盒', price: 168, originalPrice: 198, image: '🍶', sales: 623, tag: '非遗', village: '北墘村' },
-    { id: 3, name: '高山云雾茶', price: 158, originalPrice: 188, image: '🍵', sales: 512, tag: '特产', village: '漈头村' },
-    { id: 4, name: '农家百花蜜', price: 88, originalPrice: 108, image: '🍯', sales: 398, tag: '养生', village: '龙潭古镇' },
-    { id: 5, name: '柿子干', price: 38, originalPrice: 48, image: '🥭', sales: 287, tag: '特产', village: '四坪村' },
-    { id: 6, name: '非遗竹编', price: 128, originalPrice: 158, image: '🧺', sales: 156, tag: '非遗', village: '漈下村' }
+  // 商品分类和产品数据
+  const productCategories = [
+    { id: 0, name: '全部', icon: '🛍️' },
+    { id: 1, name: '柿子系列', icon: '🍅' },
+    { id: 2, name: '黄酒系列', icon: '🍶' },
+    { id: 3, name: '茶叶蜂蜜', icon: '🍵' },
+    { id: 4, name: '非遗文创', icon: '🎨' },
+    { id: 5, name: '农特产品', icon: '🌾' }
   ];
+
+  // 完整产品列表（每个系列至少6个）
+  const allProducts = [
+    // 柿子系列（6个产品）
+    { id: 1, name: '屏南柿子礼盒', price: 98, originalPrice: 128, image: '🎁', sales: 856, tag: '爆款', village: '四坪村', category: 1, desc: '四坪村特产柿子，软糯香甜，礼盒装适合送礼', detail: '精选四坪村核心产区柿子，传统古法晾晒，保留原汁原味。礼盒装包含柿饼、柿干等多种产品，是屏南柿子节最佳伴手礼。' },
+    { id: 2, name: '有机柿饼', price: 68, originalPrice: 88, image: '🥮', sales: 623, tag: '特产', village: '四坪村', category: 1, desc: '传统古法晾晒，无添加天然甜', detail: '四坪村有机柿子自然晾晒而成，无任何添加剂，保留柿子天然甜味和营养成分，口感软糯，老少皆宜。' },
+    { id: 3, name: '柿子干', price: 38, originalPrice: 48, image: '🥭', sales: 287, tag: '特产', village: '四坪村', category: 1, desc: '便携装柿子干，零食首选', detail: '便携装柿子干，方便携带，是旅游途中的健康零食选择。采用四坪村优质柿子制作，口感独特。' },
+    { id: 4, name: '柿子果酱', price: 48, originalPrice: 58, image: '🍯', sales: 198, tag: '新品', village: '四坪村', category: 1, desc: '纯天然柿子果酱，早餐伴侣', detail: '四坪村柿子熬制果酱，无添加防腐剂，涂抹面包或搭配酸奶，美味健康。' },
+    { id: 5, name: '柿子醋', price: 58, originalPrice: 78, image: '🫗', sales: 156, tag: '养生', village: '四坪村', category: 1, desc: '古法酿造柿子醋，养生佳品', detail: '四坪村古法酿造柿子醋，发酵一年以上，口感醇厚，具有养生保健功效。' },
+    { id: 6, name: '柿子采摘体验券', price: 58, originalPrice: 88, image: '🎫', sales: 432, tag: '推荐', village: '四坪村', category: 1, desc: '现场采摘体验，带走新鲜柿子', detail: '四坪村柿子园采摘体验券，包含采摘工具和指导，可带走采摘的新鲜柿子，适合家庭亲子活动。' },
+    
+    // 黄酒系列（6个产品）
+    { id: 7, name: '北墘黄酒礼盒', price: 168, originalPrice: 198, image: '🍶', sales: 623, tag: '非遗', village: '北墘村', category: 2, desc: '千年非遗黄酒，醇香绵柔', detail: '北墘村千年红粬黄酒非遗技艺酿造，酒香浓郁，口感绵柔，是屏南黄酒文化代表作。礼盒装适合送礼。' },
+    { id: 8, name: '古法原浆黄酒', price: 198, originalPrice: 238, image: '🫙', sales: 456, tag: '限量', village: '北墘村', category: 2, desc: '十年陈酿原浆，收藏珍品', detail: '北墘村十年陈酿原浆黄酒，采用古法酿造，酒体醇厚，是收藏和宴请的佳品。限量发售。' },
+    { id: 9, name: '黄酒品鉴套装', price: 88, originalPrice: 108, image: '🥃', sales: 312, tag: '推荐', village: '北墘村', category: 2, desc: '三种口味品鉴，了解黄酒文化', detail: '包含北墘村三种不同年份黄酒小样，配品鉴指南，让游客全面了解屏南黄酒文化。' },
+    { id: 10, name: '封坛定制服务', price: 298, originalPrice: 358, image: '⚱️', sales: 189, tag: '定制', village: '北墘村', category: 2, desc: '专属封坛纪念，独一无二', detail: '北墘村封坛定制服务，可定制专属封坛黄酒，刻字纪念，是独一无二的礼物和纪念品。' },
+    { id: 11, name: '黄酒鸡调料', price: 38, originalPrice: 48, image: '🥘', sales: 267, tag: '实用', village: '北墘村', category: 2, desc: '黄酒入菜，美味升级', detail: '北墘村黄酒特制调料，适合黄酒鸡、黄酒焖肉等屏南特色菜，带回家烹饪屏南味道。' },
+    { id: 12, name: '黄酒酿制体验', price: 168, originalPrice: 198, image: '🏭', sales: 145, tag: '体验', village: '北墘村', category: 2, desc: '体验古法酿酒，带走作品', detail: '北墘村古法酿酒体验，亲手参与酿酒过程，了解非遗技艺，带走自己酿制的黄酒。' },
+    
+    // 茶叶蜂蜜系列（6个产品）
+    { id: 13, name: '高山云雾茶', price: 158, originalPrice: 188, image: '🍵', sales: 512, tag: '特产', village: '漈头村', category: 3, desc: '海拔800米云雾茶园', detail: '漈头村海拔800米云雾茶园，高山云雾孕育优质茶叶，茶香清幽，回甘持久，是屏南高山茶代表作。' },
+    { id: 14, name: '农家百花蜜', price: 88, originalPrice: 108, image: '🍯', sales: 398, tag: '养生', village: '龙潭古镇', category: 3, desc: '百花蜜，自然成熟', detail: '龙潭古镇农家自酿百花蜜，采集多种花蜜，自然成熟，无添加，营养价值高，适合养生。' },
+    { id: 15, name: '屏南白茶', price: 128, originalPrice: 158, image: '🫖', sales: 278, tag: '新茶', village: '漈头村', category: 3, desc: '白茶新贵，清甜回甘', detail: '漈头村屏南白茶，采用优质茶青自然萎凋，茶汤清甜回甘，是白茶新贵。' },
+    { id: 16, name: '野蜂蜜', price: 118, originalPrice: 148, image: '🐝', sales: 189, tag: '稀有', village: '白玉村', category: 3, desc: '深山野蜂蜜，稀有珍贵', detail: '白玉村深山野蜂蜜，采集野生花蜜，产量稀少，品质上乘，是珍贵养生佳品。' },
+    { id: 17, name: '蜂蜜柚子茶', price: 68, originalPrice: 88, image: '🥤', sales: 234, tag: '便捷', village: '龙潭古镇', category: 3, desc: '蜂蜜+柚子，美味养生', detail: '龙潭古镇农家蜂蜜搭配柚子制作，冲水即饮，美味养生，方便携带。' },
+    { id: 18, name: '茶具套装', price: 188, originalPrice: 238, image: '☕', sales: 167, tag: '配套', village: '漈头村', category: 3, desc: '便携茶具，品茶必备', detail: '漈头村便携茶具套装，包含茶壶、茶杯、茶盘，适合旅行途中品茶。' },
+    
+    // 非遗文创系列（6个产品）
+    { id: 19, name: '非遗竹编', price: 128, originalPrice: 158, image: '🧺', sales: 156, tag: '非遗', village: '漈下村', category: 4, desc: '手工竹编，非遗技艺', detail: '漈下村非遗竹编技艺制作，纯手工编织，图案精美，是屏南非遗文化代表作。' },
+    { id: 20, name: '畲族刺绣包', price: 188, originalPrice: 228, image: '👜', sales: 134, tag: '民族', village: '巴地村', category: 4, desc: '畲族刺绣，民族风情', detail: '巴地村畲族刺绣技艺，手工绣制，图案独特，展现畲族文化，是民族风伴手礼。' },
+    { id: 21, name: '陶艺作品', price: 98, originalPrice: 128, image: '🏺', sales: 198, tag: '文艺', village: '厦地村', category: 4, desc: '厦地陶艺，文艺气息', detail: '厦地村陶艺工坊作品，手工制作，每件都独一无二，展现文艺气息。' },
+    { id: 22, name: '植物染围巾', price: 158, originalPrice: 198, image: '🧣', sales: 167, tag: '环保', village: '厦地村', category: 4, desc: '植物染色，环保时尚', detail: '厦地村植物染坊作品，采用天然植物染色，环保健康，颜色自然柔和。' },
+    { id: 23, name: '剪纸作品', price: 68, originalPrice: 88, image: '✂️', sales: 234, tag: '民俗', village: '双溪古镇', category: 4, desc: '传统剪纸，民俗艺术', detail: '双溪古镇传统剪纸艺术，手工剪制，图案丰富，展现屏南民俗文化。' },
+    { id: 24, name: '木雕摆件', price: 138, originalPrice: 168, image: '🪵', sales: 145, tag: '匠心', village: '漈下村', category: 4, desc: '手工木雕，匠心独运', detail: '漈下村手工木雕作品，采用本地木材，精雕细琢，是匠心独运的艺术品。' },
+    
+    // 农特产品系列（6个产品）
+    { id: 25, name: '屏南笋干', price: 58, originalPrice: 78, image: '🥬', sales: 345, tag: '干货', village: '漈头村', category: 5, desc: '高山笋干，天然美味', detail: '漈头村高山笋干，自然晾晒，保留笋的鲜味，是屏南山区特产。' },
+    { id: 26, name: '农家土鸡蛋', price: 48, originalPrice: 58, image: '🥚', sales: 423, tag: '新鲜', village: '四坪村', category: 5, desc: '散养土鸡蛋，营养丰富', detail: '四坪村散养土鸡蛋，吃虫草长大，营养丰富，蛋黄饱满，是真正的农家土鸡蛋。' },
+    { id: 27, name: '高山大米', price: 68, originalPrice: 88, image: '🍚', sales: 287, tag: '优质', village: '白玉村', category: 5, desc: '高山梯田米，香甜软糯', detail: '白玉村高山梯田大米，光照充足，米粒饱满，煮熟后香甜软糯。' },
+    { id: 28, name: '野生菌干货', price: 88, originalPrice: 108, image: '🍄', sales: 189, tag: '山珍', village: '龙潭古镇', category: 5, desc: '深山野生菌，山珍美味', detail: '龙潭古镇深山野生菌，人工采摘晾晒，是屏南山区山珍美味。' },
+    { id: 29, name: '农家菜干', price: 38, originalPrice: 48, image: '🥗', sales: 312, tag: '传统', village: '漈下村', category: 5, desc: '传统菜干，家乡味道', detail: '漈下村传统菜干，采用本地蔬菜晾晒，是屏南传统农家菜食材。' },
+    { id: 30, name: '山茶油', price: 98, originalPrice: 128, image: '🫒', sales: 234, tag: '健康', village: '漈头村', category: 5, desc: '野生山茶油，健康食用油', detail: '漈头村野生山茶籽压榨而成，无添加，营养价值高，是健康食用油首选。' }
+  ];
+
+  // 根据分类筛选产品
+  const getFilteredProducts = () => {
+    if (activeCategory === 0) return allProducts;
+    return allProducts.filter(p => p.category === activeCategory);
+  };
 
   // 活动日历
   const activities = [
@@ -258,10 +301,15 @@ export default function MiniProgramPage() {
   const addToTrunk = (productId: number, productName: string) => {
     if (!trunkItems.includes(productId)) {
       setTrunkItems([...trunkItems, productId]);
-      setSuccessMessage(`${productName} 已加入后备箱清单`);
+      setSuccessMessage(`${productName} 已加入清单`);
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 2000);
     }
+  };
+
+  const openProductDetail = (product: any) => {
+    setSelectedProduct(product);
+    setShowProductDetail(true);
   };
 
   // 首页内容
@@ -273,7 +321,7 @@ export default function MiniProgramPage() {
           <div className="flex items-center gap-3">
             <div className="flex-1 flex items-center gap-2 px-4 py-2.5 bg-gray-100 rounded-full">
               <Search className="w-4 h-4 text-gray-400" />
-              <span className="text-sm text-gray-400">搜索村庄、景点、活动...</span>
+              <span className="text-sm text-gray-400">搜索村庄、景点、商品...</span>
             </div>
             <div className="relative">
               <Bell className="w-5 h-5 text-gray-600" />
@@ -412,18 +460,22 @@ export default function MiniProgramPage() {
         </div>
       </div>
 
-      {/* 乡村好物推荐 */}
+      {/* 后备箱乡村好物推荐 */}
       <div className="px-4 py-3">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-lg font-bold text-gray-800">🛍️ 后备箱清单</h3>
+          <h3 className="text-lg font-bold text-gray-800">🛍️ 后备箱乡村好物</h3>
           <button className="text-sm text-gray-500 flex items-center gap-1">
             更多 <ChevronRight className="w-4 h-4" />
           </button>
         </div>
         
         <div className="grid grid-cols-2 gap-3">
-          {products.slice(0, 4).map(product => (
-            <Card key={product.id} className="border border-gray-100 shadow-sm">
+          {allProducts.slice(0, 4).map(product => (
+            <Card 
+              key={product.id} 
+              className="border border-gray-100 shadow-sm cursor-pointer"
+              onClick={() => openProductDetail(product)}
+            >
               <CardContent className="p-2">
                 <div className="h-28 bg-gradient-to-br from-orange-50 to-yellow-50 rounded-lg flex items-center justify-center text-4xl mb-2 relative">
                   {product.image}
@@ -442,7 +494,10 @@ export default function MiniProgramPage() {
                 <Button
                   size="sm"
                   className={`w-full h-7 text-xs ${trunkItems.includes(product.id) ? 'bg-green-600' : 'bg-orange-600 hover:bg-orange-700'}`}
-                  onClick={() => addToTrunk(product.id, product.name)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    addToTrunk(product.id, product.name);
+                  }}
                   disabled={trunkItems.includes(product.id)}
                 >
                   {trunkItems.includes(product.id) ? '已加入' : '加入清单'}
@@ -592,21 +647,23 @@ export default function MiniProgramPage() {
     <div className="pb-20">
       {/* 顶部 */}
       <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-6">
-        <h2 className="text-xl font-bold mb-2">🛒 后备箱经济</h2>
+        <h2 className="text-xl font-bold mb-2">🛒 后备箱乡村好物</h2>
         <p className="text-sm text-white/80">带走屏南的味道与记忆</p>
       </div>
 
       {/* 分类 */}
       <div className="px-4 py-3">
         <div className="flex gap-2 overflow-x-auto pb-2">
-          {['全部', '柿子系列', '黄酒系列', '茶叶蜂蜜', '非遗文创', '农特产品'].map((cat, i) => (
+          {productCategories.map((cat) => (
             <button
-              key={i}
-              className={`px-4 py-2 rounded-full text-sm whitespace-nowrap ${
-                i === 0 ? 'bg-orange-600 text-white' : 'bg-gray-100 text-gray-700'
+              key={cat.id}
+              onClick={() => setActiveCategory(cat.id)}
+              className={`px-4 py-2 rounded-full text-sm whitespace-nowrap flex items-center gap-1.5 ${
+                activeCategory === cat.id ? 'bg-orange-600 text-white' : 'bg-gray-100 text-gray-700'
               }`}
             >
-              {cat}
+              <span>{cat.icon}</span>
+              <span>{cat.name}</span>
             </button>
           ))}
         </div>
@@ -614,9 +671,16 @@ export default function MiniProgramPage() {
 
       {/* 商品列表 */}
       <div className="px-4 py-2">
+        <div className="mb-3 text-sm text-gray-500">
+          共 {getFilteredProducts().length} 个商品
+        </div>
         <div className="grid grid-cols-2 gap-3">
-          {products.map(product => (
-            <Card key={product.id} className="border border-gray-100 shadow-sm">
+          {getFilteredProducts().map(product => (
+            <Card 
+              key={product.id} 
+              className="border border-gray-100 shadow-sm cursor-pointer"
+              onClick={() => openProductDetail(product)}
+            >
               <CardContent className="p-2">
                 <div className="h-32 bg-gradient-to-br from-orange-50 to-yellow-50 rounded-lg flex items-center justify-center text-4xl mb-2 relative">
                   {product.image}
@@ -635,7 +699,10 @@ export default function MiniProgramPage() {
                 <Button
                   size="sm"
                   className={`w-full h-7 text-xs ${trunkItems.includes(product.id) ? 'bg-green-600' : 'bg-orange-600 hover:bg-orange-700'}`}
-                  onClick={() => addToTrunk(product.id, product.name)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    addToTrunk(product.id, product.name);
+                  }}
                   disabled={trunkItems.includes(product.id)}
                 >
                   {trunkItems.includes(product.id) ? '已加入' : '加入清单'}
@@ -808,6 +875,70 @@ export default function MiniProgramPage() {
             </div>
             <p className="text-gray-700">{successMessage}</p>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* 产品详情弹窗 */}
+      <Dialog open={showProductDetail} onOpenChange={setShowProductDetail}>
+        <DialogContent className="max-w-sm">
+          {selectedProduct && (
+            <div>
+              {/* 产品图片 */}
+              <div className="h-48 bg-gradient-to-br from-orange-50 to-yellow-50 rounded-lg flex items-center justify-center text-7xl mb-4 relative">
+                {selectedProduct.image}
+                {selectedProduct.tag && (
+                  <div className="absolute top-3 left-3 px-3 py-1 bg-red-500 rounded text-sm text-white font-semibold">
+                    {selectedProduct.tag}
+                  </div>
+                )}
+              </div>
+              
+              {/* 产品信息 */}
+              <h2 className="text-xl font-bold mb-2">{selectedProduct.name}</h2>
+              
+              <div className="flex items-center gap-2 mb-3">
+                <Badge variant="outline">{selectedProduct.village}</Badge>
+                <span className="text-sm text-gray-500">已售 {selectedProduct.sales}</span>
+              </div>
+              
+              <div className="flex items-baseline gap-2 mb-3">
+                <span className="text-2xl font-bold text-orange-600">¥{selectedProduct.price}</span>
+                <span className="text-base text-gray-400 line-through">¥{selectedProduct.originalPrice}</span>
+              </div>
+              
+              <div className="bg-gray-50 rounded-lg p-3 mb-4">
+                <p className="text-sm text-gray-700 mb-2">
+                  <span className="font-semibold">简介：</span>
+                  {selectedProduct.desc}
+                </p>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  <span className="font-semibold">详情：</span>
+                  {selectedProduct.detail}
+                </p>
+              </div>
+              
+              {/* 操作按钮 */}
+              <div className="flex gap-3">
+                <Button
+                  className="flex-1 bg-orange-600 hover:bg-orange-700"
+                  onClick={() => {
+                    addToTrunk(selectedProduct.id, selectedProduct.name);
+                    setShowProductDetail(false);
+                  }}
+                  disabled={trunkItems.includes(selectedProduct.id)}
+                >
+                  {trunkItems.includes(selectedProduct.id) ? '已加入清单' : '加入清单'}
+                </Button>
+                <Button
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => setShowProductDetail(false)}
+                >
+                  关闭
+                </Button>
+              </div>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </div>
