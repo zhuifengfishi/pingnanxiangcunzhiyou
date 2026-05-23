@@ -796,41 +796,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 黑客松实现路径 */}
-      <section id="path" className="py-20 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">为什么这个项目 1 小时能跑起来？</h2>
-            <p className="text-lg text-gray-600">Vibe Coding，让创意快速落地</p>
-          </div>
-
-          <div className="max-w-3xl mx-auto">
-            {[
-              { time: '0-10分钟', task: 'AI生成前端页面', icon: Target, color: 'green' },
-              { time: '10-20分钟', task: '接入游客行为模拟数据', icon: Database, color: 'blue' },
-              { time: '20-35分钟', task: '加入AI推荐逻辑', icon: Lightbulb, color: 'orange' },
-              { time: '35-50分钟', task: '生成数据大屏', icon: BarChart3, color: 'purple' },
-              { time: '50-60分钟', task: '整理演示故事和项目路演', icon: Play, color: 'pink' }
-            ].map((item, i) => (
-              <div key={i} className="flex items-start gap-4 mb-6">
-                <div className={`w-12 h-12 bg-${item.color}-600 rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold`}>
-                  {i + 1}
-                </div>
-                <div className="flex-1 pt-2">
-                  <div className="flex items-center gap-3 mb-2">
-                    <Badge className={`bg-${item.color}-100 text-${item.color}-700`}>
-                      {item.time}
-                    </Badge>
-                    <span className="font-semibold text-gray-800">{item.task}</span>
-                  </div>
-                  <div className="h-px bg-gray-200" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* 价值总结 */}
       <section id="summary" className="py-20 bg-gradient-to-br from-green-600 via-green-700 to-blue-800">
         <div className="max-w-7xl mx-auto px-4 text-center">
