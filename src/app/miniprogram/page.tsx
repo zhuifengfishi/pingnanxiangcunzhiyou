@@ -39,7 +39,8 @@ import {
   ShoppingCart as Cart,
   Navigation2,
   Volume2,
-  Zap
+  Zap,
+  ShoppingBag
 } from 'lucide-react';
 
 export default function MiniProgramPage() {
@@ -589,6 +590,44 @@ export default function MiniProgramPage() {
                     </div>
                   </CardContent>
                 </Card>
+              </div>
+            </div>
+
+            {/* 乡村好物推荐 */}
+            <div>
+              <div className="flex justify-between items-center mb-3">
+                <h3 className="font-bold text-gray-800 flex items-center gap-2">
+                  <ShoppingBag className="w-5 h-5 text-orange-500" />
+                  乡村好物
+                </h3>
+                <button 
+                  onClick={() => setActiveTab('shop')}
+                  className="text-sm text-orange-500 flex items-center gap-1"
+                >
+                  查看全部 <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                {allProducts.slice(0, 4).map((product) => (
+                  <Card key={product.id} className="border-0 shadow-md overflow-hidden">
+                    <div className="h-24 bg-gradient-to-br from-orange-100 to-green-100 flex items-center justify-center text-4xl">
+                      {product.image}
+                    </div>
+                    <CardContent className="p-3">
+                      <h4 className="font-bold text-sm text-gray-800 mb-1 truncate">{product.name}</h4>
+                      <p className="text-xs text-gray-500 mb-2">{product.village}</p>
+                      <div className="flex items-center justify-between">
+                        <span className="text-orange-500 font-bold text-sm">¥{product.price}</span>
+                        <button
+                          onClick={() => addToTrunk(product.id)}
+                          className="text-xs bg-orange-500 text-white px-2 py-1 rounded-full hover:bg-orange-600"
+                        >
+                          加入清单
+                        </button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
             </div>
           </div>
